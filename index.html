@@ -274,10 +274,20 @@
             if (!objectDetector) {
                 initializeAI();
             } else {
-                // Beri sedikit jeda waktu render (100ms = maksimal 10 FPS) 
-                // agar laptop tidak terlalu panas memproses AI
-                setTimeout(detectCurrentFrame, 100); 
+                // Beri sedikit jeda waktu render (200ms = maksimal 5 FPS) 
+                // agar ESP32-CAM tidak terlalu panas memproses gambar
+                setTimeout(detectCurrentFrame, 200); 
             }
+        };
+
+        // JIKA GAGAL MEMUAT GAMBAR (Penawar masalah "loss")
+        imgElement.onerror = () => {
+            console.warn("ESP32-CAM telat mengirim gambar. Mencoba ulang...");
+            // Bersihkan kanvas agar kotak AI tidak nyangkut saat gambar blank
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            
+            // Tunggu setengah detik, lalu pancing lagi agar loop tidak mati
+            setTimeout(requestNewFrame, 500);
         };
     </script>
 </body>
