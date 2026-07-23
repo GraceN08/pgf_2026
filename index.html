@@ -1,1 +1,52 @@
-Hello 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Rapih</title>
+    <!-- Memuat Tailwind CSS melalui CDN untuk styling instan -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <!-- Header / Navigasi -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <!-- Logo Project -->
+            <a href="#" class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition duration-300">
+                MyProject.
+            </a>
+
+            <!-- Menu Navigasi (Disembunyikan di layar kecil) -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Beranda</a>
+                <a href="#fitur" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Fitur</a>
+                <a href="#tentang" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Tentang</a>
+            </nav>
+
+            <!-- Tombol Aksi -->
+            <div>
+                <a href="https://github.com/username/repo-kamu" target="_blank" class="bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-sm">
+                    Lihat GitHub
+                </a>
+            </div>
+            
+        </div>
+    </header>
+
+    <!-- Konten Utama (Hero Section) -->
+    <main class="container mx-auto px-6 py-24 text-center">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
+            Selamat Datang di Website Saya
+        </h1>
+        <p class="text-lg text-gray-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Ini adalah struktur dasar website dengan header yang bersih dan modern. Sangat cocok untuk dijadikan halaman pendaratan (landing page) repositori proyek.
+        </p>
+        <button class="bg-gray-900 text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition duration-300 font-medium">
+            Mulai Eksplorasi
+        </button>
+    </main>
+
+</body>
+</html>
