@@ -110,7 +110,7 @@
                         <!-- crossorigin="anonymous" SANGAT PENTING untuk AI membaca pixel -->
                         <img 
                             id="camFeed"
-                            src="http://10.101.209.102" 
+                            src="http://10.101.209.102/capture" 
                             crossorigin="anonymous"
                             alt="Kamera Live Feed"
                             class="absolute inset-0 w-full h-full object-contain"
@@ -128,7 +128,6 @@
 
     <!-- About Section -->
     <section id="about" class="py-24 bg-white">
-        <!-- ... (Isi section tentang tetap sama seperti sebelumnya) ... -->
         <div class="container mx-auto px-6 max-w-5xl">
             <h2 class="font-display text-3xl md:text-4xl font-bold text-slate-950 text-center mb-6 leading-tight">Tentang Profil Saya</h2>
             <div class="grid md:grid-cols-3 gap-8">
@@ -169,7 +168,7 @@
         </div>
     </section>
 
-    <!-- Script MediaPipe Object Detection -->
+    <!-- Script MediaPipe Object Detection (Update Berkelanjutan) -->
     <script type="module">
         import { ObjectDetector, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
 
@@ -180,6 +179,9 @@
 
         let objectDetector;
         let isDetecting = false;
+        
+        // Base URL kamera kamu (gunakan /capture agar bisa me-refresh gambar)
+        const baseUrl = "http://10.101.209.102/capture";
 
         const initializeAI = async () => {
             statusText.innerText = "Memuat model AI (MediaPipe)...";
@@ -201,14 +203,16 @@
                 
                 statusText.innerText = "🔴 AI Aktif! Membaca frame...";
                 isDetecting = true;
-                detectFrame();
+                
+                // Mulai siklus pembaruan gambar
+                requestNewFrame();
             } catch (error) {
                 console.error(error);
                 statusText.innerText = "Gagal memuat AI. Cek Console.";
             }
         };
 
-        const detectFrame = async () => {
+        const detectCurrentFrame = () => {
             if (!isDetecting || !objectDetector) return;
 
             // Jika gambar ada ukurannya (berhasil diload)
@@ -249,20 +253,31 @@
                     }
                 } catch (error) {
                     isDetecting = false;
-                    statusText.innerText = "⚠️ Diblokir oleh aturan CORS. Cek catatan.";
+                    statusText.innerText = "⚠️ Error membaca pixel (CORS).";
                     console.error("Browser memblokir JS untuk membaca pixel dari IP Cam karena masalah CORS:", error);
                     return;
                 }
             }
             
-            // Ulangi terus menerus seperti animasi
-            requestAnimationFrame(detectFrame);
+            // Setelah selesai mendeteksi, minta gambar baru
+            requestNewFrame();
         };
 
-        // Pancing inisiasi saat frame gambar pertama masuk
+        // Fungsi untuk memaksa kamera mengirimkan frame baru
+        const requestNewFrame = () => {
+            // Menggunakan parameter "?t=" (waktu saat ini) sebagai cache-buster 
+            // agar browser selalu memuat foto terbaru, bukan versi lama di memorinya
+            imgElement.src = `${baseUrl}?t=${new Date().getTime()}`;
+        };
+
+        // Trigger AI setiap kali 1 frame baru berhasil didownload
         imgElement.onload = () => {
             if (!objectDetector) {
                 initializeAI();
+            } else {
+                // Beri sedikit jeda waktu render (100ms = maksimal 10 FPS) 
+                // agar laptop tidak terlalu panas memproses AI
+                setTimeout(detectCurrentFrame, 100); 
             }
         };
     </script>
