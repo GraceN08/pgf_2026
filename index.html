@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graciella Nicole - Personal Page</title>
-    <!-- Memuat Tailwind CSS untuk styling modern -->
+    <!-- Memuat Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -23,7 +23,6 @@
             }
         }
     </script>
-    <!-- Memuat Font Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=600;700&family=Quicksand:wght=400;500;600&display=swap" rel="stylesheet">
@@ -41,7 +40,7 @@
 </head>
 <body class="bg-pattern bg-white text-slate-800 font-sans selection:bg-secondary/20 selection:text-secondary">
 
-    <!-- Header / Navigasi -->
+    <!-- Header -->
     <header class="glass sticky top-0 z-50 shadow-sm border-b border-white/20">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="font-display text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-tight">
@@ -50,7 +49,7 @@
             <nav class="hidden md:flex space-x-8">
                 <a href="#home" class="text-slate-700 hover:text-primary font-medium transition duration-300">Home</a>
                 <a href="#about" class="text-slate-700 hover:text-primary font-medium transition duration-300">Tentang</a>
-                <a href="#stream" class="text-slate-700 hover:text-primary font-medium transition duration-300">Live</a>
+                <a href="#stream" class="text-slate-700 hover:text-primary font-medium transition duration-300">Live AI</a>
                 <a href="#unpar" class="text-slate-700 hover:text-primary font-medium transition duration-300">Pendidikan</a>
             </nav>
             <div>
@@ -79,48 +78,49 @@
             <p class="text-lg md:text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
                 Mahasiswa aktif di Program Studi <span class="font-semibold text-slate-800">Fisika</span>, Fakultas Teknologi Informasi dan Sains, Universitas Katolik Parahyangan.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#about" class="bg-slate-950 text-white px-8 py-3.5 rounded-full hover:bg-slate-800 transition duration-300 font-semibold shadow-xl shadow-slate-950/20 w-full sm:w-auto">
-                    Kenali Saya Lebih Lanjut
-                </a>
-                <a href="#contact" class="group flex items-center gap-2 text-primary font-semibold py-3 px-6 rounded-full hover:bg-primary/5 transition duration-300 w-full sm:w-auto justify-center">
-                    Kontak & Media Sosial
-                    <span class="transform group-hover:translate-x-1 transition-transform">→</span>
-                </a>
-            </div>
         </div>
     </section>
 
-    <!-- SECTION BARU: Live Stream Pemanis -->
+    <!-- Live Stream AI Section -->
     <section id="stream" class="py-24 bg-gradient-to-b from-white to-slate-50 border-y border-slate-100">
         <div class="container mx-auto px-6 max-w-4xl text-center">
-            <p class="text-sm font-semibold uppercase tracking-widest text-secondary mb-2">Live feed</p>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-slate-950 mb-10">Stream Monitor</h2>
+            <p class="text-sm font-semibold uppercase tracking-widest text-secondary mb-2">Live feed & AI Detection</p>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-slate-950 mb-10">Smart Stream Monitor</h2>
             
-            <!-- Frame cantik untuk video stream -->
             <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/20 border-4 border-white bg-slate-100 p-2 transform transition hover:scale-[1.01] duration-500">
-                <!-- Titik-titik hiasan di atas frame -->
                 <div class="flex gap-2 mb-3 ml-2 pt-1">
                     <div class="w-3 h-3 rounded-full bg-red-400"></div>
                     <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
                     <div class="w-3 h-3 rounded-full bg-green-400"></div>
                 </div>
                 
-                <!-- TAG IMG UNTUK STREAM/CAPTURE -->
                 <div class="aspect-video w-full rounded-2xl overflow-hidden bg-slate-900 relative flex items-center justify-center">
-                    <!-- Pesan Loading/Error di belakang gambar -->
-                    <div class="absolute text-slate-500 text-sm px-4 text-center">
-                        Mencoba memuat visual... <br>
-                        (Jika blank, pastikan kamu terhubung ke jaringan lokal & izinkan Insecure Content)
+                    
+                    <!-- Indikator Status AI -->
+                    <div id="aiStatus" class="absolute top-4 left-4 bg-slate-900/80 text-white text-xs px-3 py-1 rounded-full z-40 backdrop-blur font-mono border border-white/20">
+                        Menunggu frame kamera...
                     </div>
                     
-                    <!-- Menggunakan tag img dengan pengaturan rotasi dan scale -->
-                    <img 
-                        src="http://10.101.209.102/capture" 
-                        alt="Kamera Live Feed"
-                        class="w-full h-full object-contain relative z-10 -rotate-90 scale-125 md:scale-150"
-                        onerror="this.style.display='none'"
-                    />
+                    <div class="absolute text-slate-500 text-sm px-4 text-center z-0">
+                        Mencoba memuat visual...
+                    </div>
+                    
+                    <!-- Wrapper rotasi dan scale. Image dan Canvas ditumpuk dengan transformasi yang persis sama -->
+                    <div class="relative w-full h-full -rotate-90 scale-125 md:scale-150 z-10">
+                        <!-- crossorigin="anonymous" SANGAT PENTING untuk AI membaca pixel -->
+                        <img 
+                            id="camFeed"
+                            src="http://10.101.209.102/capture" 
+                            crossorigin="anonymous"
+                            alt="Kamera Live Feed"
+                            class="absolute inset-0 w-full h-full object-contain"
+                            onerror="this.style.display='none'"
+                        />
+                        <canvas 
+                            id="aiCanvas"
+                            class="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                        ></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,9 +128,9 @@
 
     <!-- About Section -->
     <section id="about" class="py-24 bg-white">
+        <!-- ... (Isi section tentang tetap sama seperti sebelumnya) ... -->
         <div class="container mx-auto px-6 max-w-5xl">
             <h2 class="font-display text-3xl md:text-4xl font-bold text-slate-950 text-center mb-6 leading-tight">Tentang Profil Saya</h2>
-            <p class="text-slate-600 text-center max-w-xl mx-auto mb-16">Sekilas pandang mengenai minat, fokus studi, dan nilai-nilai yang saya pegang.</p>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 hover:border-primary/20 hover:shadow-primary/5 transition duration-300 transform hover:-translate-y-1">
                     <div class="text-5xl mb-6 text-primary">⚛️</div>
@@ -169,36 +169,102 @@
         </div>
     </section>
 
-    <!-- Contact & Social Media -->
-    <section id="contact" class="py-24 bg-slate-950 text-white rounded-t-[40px]">
-        <div class="container mx-auto px-6 text-center max-w-4xl">
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-6">Mari Terhubung</h2>
-            <p class="text-slate-400 mb-16 max-w-xl mx-auto leading-relaxed">Jangan ragu untuk menyapa, berkolaborasi, atau sekadar berdiskusi mengenai Fisika dan teknologi.</p>
-            
-            <div class="grid sm:grid-cols-2 gap-8 mb-20">
-                <a href="https://instagram.com/graciellanicole._" target="_blank" class="group flex items-center gap-6 p-6 bg-slate-900 rounded-3xl border border-slate-800 hover:border-secondary transition duration-300">
-                    <div class="w-16 h-16 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] rounded-2xl flex items-center justify-center text-3xl shadow-lg">📸</div>
-                    <div class="text-left">
-                        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold mb-1">Follow di Instagram</p>
-                        <p class="text-lg font-bold text-white group-hover:text-secondary transition">@graciellanicole._</p>
-                    </div>
-                </a>
+    <!-- Script MediaPipe Object Detection -->
+    <script type="module">
+        import { ObjectDetector, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
+
+        const imgElement = document.getElementById('camFeed');
+        const canvasElement = document.getElementById('aiCanvas');
+        const canvasCtx = canvasElement.getContext('2d');
+        const statusText = document.getElementById('aiStatus');
+
+        let objectDetector;
+        let isDetecting = false;
+
+        const initializeAI = async () => {
+            statusText.innerText = "Memuat model AI (MediaPipe)...";
+            try {
+                // Memuat dependensi Vision Tasks dari Google
+                const vision = await FilesetResolver.forVisionTasks(
+                    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
+                );
                 
-                <a href="mailto:graciellanicole7@gmail.com" class="group flex items-center gap-6 p-6 bg-slate-900 rounded-3xl border border-slate-800 hover:border-primary transition duration-300">
-                    <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-focus rounded-2xl flex items-center justify-center text-3xl shadow-lg">✉️</div>
-                    <div class="text-left">
-                        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold mb-1">Kirim Email</p>
-                        <p class="text-lg font-bold text-white group-hover:text-primary transition">graciellanicole7@gmail.com</p>
-                    </div>
-                </a>
-            </div>
+                // Memuat Model EfficientDet (Ringan, cocok untuk browser)
+                objectDetector = await ObjectDetector.createFromOptions(vision, {
+                    baseOptions: {
+                        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/float16/1/efficientdet_lite0.tflite",
+                        delegate: "GPU" // Gunakan GPU komputer jika tersedia
+                    },
+                    scoreThreshold: 0.5, // Hanya tampilkan tebakan AI yang keyakinannya > 50%
+                    runningMode: "IMAGE"
+                });
+                
+                statusText.innerText = "🔴 AI Aktif! Membaca frame...";
+                isDetecting = true;
+                detectFrame();
+            } catch (error) {
+                console.error(error);
+                statusText.innerText = "Gagal memuat AI. Cek Console.";
+            }
+        };
 
-            <div class="border-t border-slate-800 pt-10">
-                <p class="font-display text-xl font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">Graciella Nicole</p>
-                <p class="text-slate-500 text-xs mt-4">© 2026. Didesain dengan rapih dan cantik.</p>
-            </div>
-        </div>
-    </section>
+        const detectFrame = async () => {
+            if (!isDetecting || !objectDetector) return;
 
+            // Jika gambar ada ukurannya (berhasil diload)
+            if (imgElement.naturalWidth > 0) {
+                // Set kanvas agar persis sama dengan ukuran natural gambar dari IP Cam
+                canvasElement.width = imgElement.naturalWidth;
+                canvasElement.height = imgElement.naturalHeight;
+
+                try {
+                    // Minta AI mendeteksi gambar saat ini
+                    const detections = objectDetector.detect(imgElement);
+                    
+                    // Bersihkan coretan kanvas sebelumnya
+                    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+                    
+                    // Gambar kotak dan nama untuk tiap objek yang ditemukan
+                    for (let detection of detections.detections) {
+                        const categoryName = detection.categories[0].categoryName;
+                        const score = Math.round(parseFloat(detection.categories[0].score) * 100);
+                        const box = detection.boundingBox;
+
+                        // 1. Gambar Kotak (Bounding Box)
+                        canvasCtx.beginPath();
+                        canvasCtx.lineWidth = 4;
+                        canvasCtx.strokeStyle = "#8b5cf6"; // Warna Primary Tailwind
+                        canvasCtx.rect(box.originX, box.originY, box.width, box.height);
+                        canvasCtx.stroke();
+
+                        // 2. Gambar Background untuk Teks
+                        canvasCtx.fillStyle = "#8b5cf6";
+                        canvasCtx.font = "24px 'Poppins', sans-serif";
+                        const textWidth = canvasCtx.measureText(`${categoryName} ${score}%`).width;
+                        canvasCtx.fillRect(box.originX, box.originY - 40, textWidth + 20, 40);
+
+                        // 3. Tulis Nama Benda dan Persentase
+                        canvasCtx.fillStyle = "#ffffff";
+                        canvasCtx.fillText(`${categoryName} ${score}%`, box.originX + 10, box.originY - 12);
+                    }
+                } catch (error) {
+                    isDetecting = false;
+                    statusText.innerText = "⚠️ Diblokir oleh aturan CORS. Cek catatan.";
+                    console.error("Browser memblokir JS untuk membaca pixel dari IP Cam karena masalah CORS:", error);
+                    return;
+                }
+            }
+            
+            // Ulangi terus menerus seperti animasi
+            requestAnimationFrame(detectFrame);
+        };
+
+        // Pancing inisiasi saat frame gambar pertama masuk
+        imgElement.onload = () => {
+            if (!objectDetector) {
+                initializeAI();
+            }
+        };
+    </script>
 </body>
 </html>
